@@ -1,0 +1,17 @@
+# Node dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Environment variables
+.env
+
+# Temporary / build files
+temp/
+*.zip
+coverage/
+dist/
