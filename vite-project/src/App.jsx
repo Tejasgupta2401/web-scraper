@@ -22,7 +22,7 @@ function App() {
     setDownloadLink(null);
 
     try {
-      const response = await axios.post("${API_BASE}/scrape", {
+      const response = await axios.post(`${API_BASE}/scrape`, {
         targetUrl: link,
         summary: false,
       });
@@ -43,7 +43,7 @@ function App() {
   const download = async () => {
     setLoadingZip(true);
     try {
-      const response = await axios.post("${API_BASE}/download", {
+      const response = await axios.post(`${API_BASE}/download`, {
         html: data,
         url: link,
       });
