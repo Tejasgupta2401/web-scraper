@@ -28,7 +28,7 @@ app.use('/temp', express.static('/tmp'));
 
 const port = 5000;
 
-app.post('/', (req,res) => {
+app.get('/', (req,res) => {
     return res.json({message:"hello,buddy"}
     );
 })
@@ -141,7 +141,7 @@ app.post("/download", async (req, res) => {
 
     // Wait for stream to finish
     output.on("close", () => {
-      const downloadUrl = `${req.protocol}://${req.get('host')}/temp/${folderId}/site.zip`;
+      const downloadUrl = `${process.env.BASE_URL}/temp/${folderId}/site.zip`;
       console.log("✅ ZIP ready:", downloadUrl);
       res.json({ downloadUrl }); 
 
