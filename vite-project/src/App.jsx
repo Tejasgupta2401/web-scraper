@@ -12,6 +12,8 @@ function App() {
 
   const previewRef = useRef(null);
 
+  const API_BASE = "https://web-scraper-j51a.onrender.com";
+
   const send = async (e) => {
     e.preventDefault();
     setLoadingScrape(true);
@@ -20,7 +22,7 @@ function App() {
     setDownloadLink(null);
 
     try {
-      const response = await axios.post("http://localhost:5000/scrape", {
+      const response = await axios.post("${API_BASE}/scrape", {
         targetUrl: link,
         summary: false,
       });
@@ -41,7 +43,7 @@ function App() {
   const download = async () => {
     setLoadingZip(true);
     try {
-      const response = await axios.post("http://localhost:5000/download", {
+      const response = await axios.post("${API_BASE}/download", {
         html: data,
         url: link,
       });
@@ -250,121 +252,4 @@ export default App;
 
 
 
-
-// import { useState } from "react";
-// import axios from "axios";
-
-// function App() {
-//   const [link, setLink] = useState("");
-//   const [data, setData] = useState(null);
-//   const [downloadLink, setDownloadLink] = useState(null);
-//   const [loadingScrape, setLoadingScrape] = useState(false);
-//   const [loadingZip, setLoadingZip] = useState(false);
-//   const [iframeLoaded, setIframeLoaded] = useState(false); // 👈 new state to track iframe rendering
-
-//   const send = async (e) => {
-//     e.preventDefault();
-//     setLoadingScrape(true);
-//     setIframeLoaded(false);
-//     setData(null);
-//     setDownloadLink(null);
-
-//     try {
-//       const response = await axios.post("http://localhost:5000/scrape", {
-//         targetUrl: link,
-//         summary: false,
-//       });
-//       setData(response.data.html);
-//     } catch (error) {
-//       console.error("❌ Scrape failed:", error);
-//       alert("Failed to scrape website");
-//     } finally {
-//       setLoadingScrape(false);
-//     }
-//   };
-
-//   const download = async () => {
-//     setLoadingZip(true);
-//     try {
-//       const response = await axios.post("http://localhost:5000/download", {
-//         html: data,
-//         url: link,
-//       });
-//       setDownloadLink(response.data.downloadUrl);
-//     } catch (error) {
-//       console.error("❌ Failed to get download link:", error);
-//       alert("Failed to generate ZIP");
-//     } finally {
-//       setLoadingZip(false);
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <h1>🌐 Web Scraper Downloader</h1>
-
-//       {/* Input + Scrape button */}
-//       <input
-//         type="text"
-//         placeholder="Enter website URL"
-//         value={link}
-//         onChange={(e) => setLink(e.target.value)}
-//         style={{ width: "70%", padding: "8px", marginRight: "10px" }}
-//       />
-//       <button onClick={send} disabled={loadingScrape}>
-//         {loadingScrape ? "Scraping..." : "Scrape Site"}
-//       </button>
-
-//       {loadingScrape && <p>⏳ Fetching website content...</p>}
-
-//       {/* Show iframe after scrape */}
-//       {data && (
-//         <div style={{ marginTop: "20px" }}>
-//           <h3>Preview:</h3>
-
-//           <iframe
-//             srcDoc={data}
-//             title="Scraped Page"
-//             style={{
-//               width: "100%",
-//               height: "70vh",
-//               border: "1px solid #ccc",
-//               borderRadius: "8px",
-//             }}
-//             onLoad={() => {
-//               console.log("✅ Iframe Rendered");
-//               setIframeLoaded(true);
-//             }}
-//           />
-
-//           {/* Download button only visible after iframe loads */}
-//           {iframeLoaded && (
-//             <div style={{ marginTop: "20px" }}>
-//               <button onClick={download} disabled={loadingZip}>
-//                 {loadingZip ? "Generating ZIP..." : "Generate Download Link"}
-//               </button>
-
-//               {loadingZip && <p>🧩 Preparing ZIP...</p>}
-
-//               {downloadLink && (
-//                 <div style={{ marginTop: "15px" }}>
-//                   <a
-//                     href={downloadLink}
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                     download
-//                   >
-//                     ⬇️ Click here to download ZIP
-//                   </a>
-//                 </div>
-//               )}
-//             </div>
-//           )}
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default App;
 
