@@ -20,7 +20,8 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 
-app.use('/temp', express.static(path.join(__dirname, 'temp')));
+app.use('/temp', express.static('/tmp'));
+
 
 // app.use('/temp/:folderId', express.static(path.join(__dirname, 'temp')));
 
@@ -119,7 +120,8 @@ app.post("/download", async (req, res) => {
     if (!html) return res.status(400).json({ error: "No HTML provided" });
 
     const folderId = uuidv4();
-    const folder = path.join("./temp", folderId);
+    const folder = path.join("/tmp", folderId);
+
     fs.mkdirSync(folder, { recursive: true });
     fs.writeFileSync(path.join(folder, "index.html"), html);
 
@@ -139,7 +141,7 @@ app.post("/download", async (req, res) => {
 
     // Wait for stream to finish
     output.on("close", () => {
-      const downloadUrl = `http://localhost:${port}/temp/${folderId}/site.zip`;
+      const downloadUrl = `${req.protocol}://${req.get('host')}/temp/${folderId}/site.zip`;
       console.log("✅ ZIP ready:", downloadUrl);
       res.json({ downloadUrl }); 
 
